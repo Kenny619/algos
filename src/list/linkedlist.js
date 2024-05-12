@@ -60,36 +60,79 @@ class LinkedList {
 
 	//unshift
 	unshift(data) {
+		if (this.size === 0) {
+			this.head = { data: data, next: null };
+			this.head = { data: data, next: null }
+			return;
+		}
 		const next = this.node.head;
 		this.node.head = { data: data, next: next };
 		this.size++;
 	}
 
-	//insertAtIndex
-	insertAtIndex(data, index) {
-		if (index > this.size || index < 0) {
-			console.log("index out of range.");
+	//push to index
+	pushToIndex(data, index) {
+		if (index > this.size+1 || index < 0) {
+			console.log(`ERROR: index out of range.  index needs to be between 1 and ${this.size + 1}`);
 			return;
 		}
-		if (index === 0 || index === this.size) {
-			this.unshift(data);
+		
+		if (index === this.size) {
+			this.push(data);
 			return;
 		}
 
 		let current = this.node.head;
-		let position = index;
-		while (position !== 1) {
-			current = current.next;
-			position--;
-		}
-		const next = { ...current.next };
-		current.next = { data: data, next: next };
+		for (let i = 1; i < index; i++)  current = current.next;
+		const next = { ...current } ;
+		current.data = data;
+		current.next = next;
+
 		this.size++;
 	}
 
+
+	popAtIndex(index) {
+		if (index > this.size || index < 0) {
+			console.log(`ERROR: index out of range.  index needs to be between 1 and ${this.size}`);
+			return;
+		}
+
+		if (index === 1) {
+			this.shift();
+			return;
+		}
+		if (index === this.size) {
+			this.pop();
+			return;
+		}
+
+		let current = this.node.head;
+		for (let i = 1; i < index-1; i++)  current = current.next;
+		const pop = current.next.data;
+		current.next = current.next.next;
+		this.size--;
+		return pop;
+
+	}
+
+	//replace data at index
+	replace(data, index) {
+		
+		if (index > this.size || index < 0) {
+			console.log(`ERROR: index out of range.  index needs to be between 1 and ${this.size}`);
+			return;
+		}
+		
+		let current = this.node.head;
+		for (let i = 1; i < index; i++) current = current.next;
+		current.data = data;
+	}
+
+
 	//print data in the nodes
 	printData() {
-		let current = this.node.head.next;
+		let current = this.node.head;
 		while (current) {
 			console.log(current.data);
 			current = current.next;
@@ -113,4 +156,23 @@ class LinkedList {
 	}
 }
 
-export default LinkedList;
+//export default LinkedList;
+
+const ll = new LinkedList(10);
+ll.push(20);
+ll.push(30);
+ll.push(35);
+ll.unshift(5);
+ll.pop();
+ll.shift();
+ll.pushToIndex(15, 2)
+ll.pushToIndex(5, 1);
+ll.pushToIndex(40, 5);
+ll.popAtIndex(3);
+ll.popAtIndex(1);
+ll.replace(1, 1);
+ll.replace(4, 4);
+ll.replace(2, 2);
+ll.replace(3, 3);
+ll.printNode();
+ll.printData();
