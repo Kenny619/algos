@@ -20,7 +20,7 @@
   "homepage": "https://github.com/Kenny619/algos#readme",
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",
-    "@types/node": "^20.12.11",
+    "@types/node": "^20.12.12",
     "rimraf": "^5.0.7",
     "ts-node": "^10.9.2",
     "tsc": "^2.0.4",

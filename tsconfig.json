@@ -10,13 +10,13 @@
 		"noUnusedParameters": true,
 		"noImplicitReturns": true,
 		//Modules https://www.typescriptlang.org/tsconfig#Modules_6244
-		//    "moduleResolution": "node",
+		"moduleResolution": "nodeNext",
 		"module": "NodeNext",
 		"baseUrl": ".",
 		"paths": {
 			"@/*": ["./src/*"],
 			"@utils/*": ["./src/utils/*"],
-			"@type/*": ["./src/typings/*"]
+			"@type/*": ["./typings/*"]
 		},
 
 		//emit https://www.typescriptlang.org/tsconfig#Emit_6246
