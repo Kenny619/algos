@@ -85,6 +85,54 @@ class BTree {
 	}
 }
 
+/*Phind suggestion
+type Node = {
+    val: number | null;
+    left: Node | null;
+    right: Node | null;
+};
+
+class BinaryTree {
+    private tree: Node;
+
+    constructor() {
+        this.tree = { val: null, left: null, right: null };
+    }
+
+    generateTree(maxHeight: number): Node {
+        if (maxHeight < 1) return this.tree;
+
+        const uniqueValues = new Set<number>();
+        while (uniqueValues.size < 2 ** maxHeight - 1) {
+            const val = Math.floor(Math.random() * 100); // Simplified random value generation
+            uniqueValues.add(val);
+        }
+
+        this.tree.val = Array.from(uniqueValues).pop();
+        if (maxHeight === 1) return this.tree;
+
+        return buildTree(this.tree, maxHeight - 1);
+
+        function buildTree(node: Node, maxHeight: number): Node {
+            if (maxHeight === 0) return node;
+
+            node.left = { val: Array.from(uniqueValues).shift(), left: null, right: null };
+            buildTree(node.left, maxHeight - 1);
+
+            if (Math.random() > 0.5) { // Simplified conditional for demonstration
+                node.right = { val: Array.from(uniqueValues).shift(), left: null, right: null };
+                buildTree(node.right, maxHeight - 1);
+            }
+            return node;
+        }
+    }
+}
+This revision includes the use of a Set for efficient uniqueness checks, simplifies the random value generation, and extracts the tree-building logic into a separate function for better readability.
+
+Shareable 
+SUGGESTIONS
+*/
+
 function randomBool(): boolean {
 	return Math.ceil(Math.random() * 10) % 2 === 0;
 }
