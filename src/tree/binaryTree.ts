@@ -12,23 +12,17 @@ parent node of current node j can de found by
 floor((j-1)/2);
 */
 
-type node = {
+type Node = {
 	val: number | null;
-	left: node | null;
-	right: node | null;
+	left: Node | null;
+	right: Node | null;
 };
 class BTree {
-	// val: number;
-	// left: node | null;
-	// right: node | null;
 	// BFSresult: [];
 
-	tree: node;
+	tree: Node;
 
 	constructor() {
-		// this.val = val;
-		// this.left = null;
-		// this.right = null;
 		// this.BFSresult = [];
 		this.tree = { val: null, left: null, right: null };
 	}
@@ -36,32 +30,39 @@ class BTree {
 	generateTree(maxHeight: number) {
 		if (maxHeight < 1) return this.tree;
 
-		const existingVal: number[] = [];
-		while (existingVal.length < 2 ** maxHeight - 1) {
-			const val = Math.ceil(Math.random() * 10 * (1 + (2 ** maxHeight % 10)));
-			if (!existingVal.includes(val)) existingVal.push(val);
+		// create a set of random numbers to be used as node values
+		const uniqueValues = new Set<number>();
+		//random number range would be 0 to 10**exp.
+		//if max number of leaves are in 2 digits, range would be 0 to 100
+		const randomDigit = 10 ** String(2 ** maxHeight - 1).length;
+
+		//continue until the size reaches max number of leaves = 2** (maxheight -1)
+		while (uniqueValues.size < 2 ** (maxHeight - 1)) {
+			//generate random numbers between 0 to 10**exp
+			const val = Math.floor(Math.random() * randomDigit);
+			//only unique numbers will be added to the set
+			uniqueValues.add(val);
+			//			console.log(uniqueValues);
 		}
 
-		this.tree.val = existingVal.pop() as number;
+		//initialize tree
+		this.tree.val = Array.from(uniqueValues).pop() as number;
 		if (maxHeight === 1) return this.tree;
 
-		return makeTree(this.tree, maxHeight - 1);
+		return buildTree(this.tree, maxHeight - 1);
 
-		function makeTree(tree: node, maxHeight: number): node {
-			if (maxHeight === 0) return tree;
+		function buildTree(node: Node, maxHeight: number): Node {
+			if (maxHeight === 0) return node;
 
-			tree.left = { val: existingVal.pop() as number, left: null, right: null };
-			makeTree(tree.left, maxHeight - 1);
+			node.left = { val: Array.from(uniqueValues).pop() as number, left: null, right: null };
+			buildTree(node.left, maxHeight - 1);
 
-			if (randomBool()) {
-				tree.right = {
-					val: existingVal.pop() as number,
-					left: null,
-					right: null,
-				};
-				makeTree(tree.right, maxHeight - 1);
+			//generate node.right 50% of the time
+			if (Math.random() > 0.5) {
+				node.right = { val: Array.from(uniqueValues).pop() as number, left: null, right: null };
+				buildTree(node.right, maxHeight - 1);
 			}
-			return tree;
+			return node;
 		}
 	}
 
@@ -85,69 +86,6 @@ class BTree {
 	}
 }
 
-/*Phind suggestion
-type Node = {
-    val: number | null;
-    left: Node | null;
-    right: Node | null;
-};
-
-class BinaryTree {
-    private tree: Node;
-
-    constructor() {
-        this.tree = { val: null, left: null, right: null };
-    }
-
-    generateTree(maxHeight: number): Node {
-        if (maxHeight < 1) return this.tree;
-
-        const uniqueValues = new Set<number>();
-        while (uniqueValues.size < 2 ** maxHeight - 1) {
-            const val = Math.floor(Math.random() * 100); // Simplified random value generation
-            uniqueValues.add(val);
-        }
-
-        this.tree.val = Array.from(uniqueValues).pop();
-        if (maxHeight === 1) return this.tree;
-
-        return buildTree(this.tree, maxHeight - 1);
-
-        function buildTree(node: Node, maxHeight: number): Node {
-            if (maxHeight === 0) return node;
-
-            node.left = { val: Array.from(uniqueValues).shift(), left: null, right: null };
-            buildTree(node.left, maxHeight - 1);
-
-            if (Math.random() > 0.5) { // Simplified conditional for demonstration
-                node.right = { val: Array.from(uniqueValues).shift(), left: null, right: null };
-                buildTree(node.right, maxHeight - 1);
-            }
-            return node;
-        }
-    }
-}
-This revision includes the use of a Set for efficient uniqueness checks, simplifies the random value generation, and extracts the tree-building logic into a separate function for better readability.
-
-Shareable 
-SUGGESTIONS
-*/
-
-function randomBool(): boolean {
-	return Math.ceil(Math.random() * 10) % 2 === 0;
-}
-
 const bTree = new BTree();
 bTree.generateTree(4);
 bTree.print();
-
-// const bTree = new Node(10);
-// bTree.left = new Node(4);
-// bTree.right = new Node(6);
-// bTree.left.left = new Node(1);
-// bTree.left.right = new Node(2);
-// bTree.right.left = new Node(3);
-// bTree.right.right = new Node(5);
-// bTree.left.left.left = new Node(9);
-
-//function flattenBTree(tree: any[]): any[] {}
