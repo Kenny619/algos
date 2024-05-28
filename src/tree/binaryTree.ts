@@ -37,16 +37,19 @@ class BTree {
 		const randomDigit = 10 ** String(2 ** maxHeight - 1).length;
 
 		//continue until the size reaches max number of leaves = 2** (maxheight -1)
-		while (uniqueValues.size < 2 ** (maxHeight - 1)) {
+		while (uniqueValues.size < 2 ** maxHeight) {
 			//generate random numbers between 0 to 10**exp
-			const val = Math.floor(Math.random() * randomDigit);
+			const val = Math.ceil(Math.random() * randomDigit);
 			//only unique numbers will be added to the set
-			uniqueValues.add(val);
-			//			console.log(uniqueValues);
+			if (!uniqueValues.has(val)) uniqueValues.add(val);
 		}
 
+		const vals = Array.from(uniqueValues);
+		console.log(uniqueValues);
+		console.log(vals);
+
 		//initialize tree
-		this.tree.val = Array.from(uniqueValues).pop() as number;
+		this.tree.val = vals.pop() as number;
 		if (maxHeight === 1) return this.tree;
 
 		return buildTree(this.tree, maxHeight - 1);
@@ -54,32 +57,50 @@ class BTree {
 		function buildTree(node: Node, maxHeight: number): Node {
 			if (maxHeight === 0) return node;
 
-			node.left = { val: Array.from(uniqueValues).pop() as number, left: null, right: null };
+			node.left = { val: vals.pop() as number, left: null, right: null };
 			buildTree(node.left, maxHeight - 1);
 
 			//generate node.right 50% of the time
 			if (Math.random() > 0.5) {
-				node.right = { val: Array.from(uniqueValues).pop() as number, left: null, right: null };
+				node.right = { val: vals.pop() as number, left: null, right: null };
 				buildTree(node.right, maxHeight - 1);
 			}
 			return node;
 		}
 	}
 
-	// BFS() {
-	// 	if (this.val === null) {
-	// 		this.BFSresult = [];
-	// 	}
+	getTreeHeight() {}
 
-	// 	const queue: node<T>[] = [];
-	// 	if (Object.hasOwn(node, "val")) queue.push(node);
-	// 	while (queue.length > 0) {
-	// 		const curNode = queue.shift() as node<T>;
-	// 		if (Object.hasOwn(curNode, "val")) BFSresult.push(curNode.val as T);
-	// 		if (Object.hasOwn(curNode, "left") && curNode.left !== null) queue.push(curNode.left);
-	// 		if (Object.hasOwn(curNode, "right") && curNode.right !== null) queue.push(curNode.right);
-	// 	}
-	// }
+	DFS() {
+		const vals: number[] = [];
+		dfTraversal(this.tree);
+
+		function dfTraversal(tree: Node) {
+			if (tree.left) dfTraversal(tree.left);
+			if (tree.right) dfTraversal(tree.right);
+
+			vals.push(tree.val as number);
+		}
+		console.log(vals);
+	}
+
+	BFS() {
+		const vals: number[] = [];
+		const queue: Node[] = [];
+		if (this.tree.val === null) {
+			console.log([]);
+			return;
+		}
+		queue.push(this.tree);
+		while (queue.length) {
+			const node = queue.shift() as Node;
+			if (node.val) vals.push(node.val);
+
+			if (node.left) queue.push(node.left);
+			if (node.right) queue.push(node.right);
+		}
+		console.log(vals);
+	}
 
 	print() {
 		console.dir(this.tree, { depth: null });
@@ -89,3 +110,5 @@ class BTree {
 const bTree = new BTree();
 bTree.generateTree(4);
 bTree.print();
+bTree.DFS();
+bTree.BFS();

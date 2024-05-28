@@ -62,7 +62,7 @@ class LinkedList {
 	unshift(data) {
 		if (this.size === 0) {
 			this.head = { data: data, next: null };
-			this.head = { data: data, next: null }
+			this.head = { data: data, next: null };
 			return;
 		}
 		const next = this.node.head;
@@ -72,25 +72,24 @@ class LinkedList {
 
 	//push to index
 	pushToIndex(data, index) {
-		if (index > this.size+1 || index < 0) {
+		if (index > this.size + 1 || index < 0) {
 			console.log(`ERROR: index out of range.  index needs to be between 1 and ${this.size + 1}`);
 			return;
 		}
-		
+
 		if (index === this.size) {
 			this.push(data);
 			return;
 		}
 
 		let current = this.node.head;
-		for (let i = 1; i < index; i++)  current = current.next;
-		const next = { ...current } ;
+		for (let i = 1; i < index; i++) current = current.next;
+		const next = { ...current };
 		current.data = data;
 		current.next = next;
 
 		this.size++;
 	}
-
 
 	popAtIndex(index) {
 		if (index > this.size || index < 0) {
@@ -108,27 +107,37 @@ class LinkedList {
 		}
 
 		let current = this.node.head;
-		for (let i = 1; i < index-1; i++)  current = current.next;
+		for (let i = 1; i < index - 1; i++) current = current.next;
 		const pop = current.next.data;
 		current.next = current.next.next;
 		this.size--;
 		return pop;
-
 	}
 
 	//replace data at index
-	replace(data, index) {
-		
+	replaceAtIndex(data, index) {
 		if (index > this.size || index < 0) {
 			console.log(`ERROR: index out of range.  index needs to be between 1 and ${this.size}`);
 			return;
 		}
-		
+
 		let current = this.node.head;
 		for (let i = 1; i < index; i++) current = current.next;
 		current.data = data;
 	}
 
+	//Change all the values contained in the list
+	replaceAll(before, after) {}
+
+	//insert another list at index
+	insert(list, index) {}
+
+	//get all the values in the list
+	getValues() {}
+
+	sortAsc() {}
+
+	sortDesc() {}
 
 	//print data in the nodes
 	printData() {
@@ -165,7 +174,7 @@ ll.push(35);
 ll.unshift(5);
 ll.pop();
 ll.shift();
-ll.pushToIndex(15, 2)
+ll.pushToIndex(15, 2);
 ll.pushToIndex(5, 1);
 ll.pushToIndex(40, 5);
 ll.popAtIndex(3);
